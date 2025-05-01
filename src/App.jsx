@@ -5,20 +5,24 @@ import Signup from "./pages/Signup";
 import StudentDashboard from "./pages/StudentDashboard";
 import Home from "./pages/Home";
 import InstructorDashboard from "./pages/InstructorDashboard";
-import withAuth from "./HOC/withAuth"; // Import withAuth HOC
-import CourseDetails from "./pages/CourseDetails";
+import ShowCourseDetails from "./components/ShowCourseDetails";
+import ExploreCourses from "./pages/ExploreCourses";
+import InstructorAnalytics from "./pages/InstructorAnalytics.jsx";
 
 const App = () => {
-  const StudentPage = withAuth(StudentDashboard, ["student"]);
-  const InstructorPage = withAuth(InstructorDashboard, ["instructor"]);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      {/* Protect the student and instructor dashboards */}
-      <Route path="/student-dashboard" element={<StudentPage />} />
-      <Route path="/instructor-dashboard" element={<InstructorPage />} />
+      <Route path="/student-dashboard" element={<StudentDashboard />} />
+      <Route path="/instructor-dashboard" element={<InstructorDashboard />} />
+      <Route
+        path="/instructor-dashboard/courses/:courseId"
+        element={<ShowCourseDetails />}
+      />
+      <Route path="/explore" element={<ExploreCourses />} />
+      <Route path="/instructor-analytics" element={<InstructorAnalytics />} />
     </Routes>
   );
 };
