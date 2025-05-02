@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CreateNewCourse from "../components/CreateNewCourse";
-import { Origami, MoveRight, Plus, Trash } from "lucide-react";
+import { Origami, MoveRight, Plus, Trash, ArrowRight } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -119,16 +119,20 @@ export default function InstructorDashboard() {
                               <div className="">
                                 <Button
                                   variant="destructive"
-                                  className="mt-4 mr-2"
+                                  className="mt-4 mr-2 group"
                                   onClick={() => deleteCourse(course.id)}
                                 >
-                                  <Trash size={16} className="mr-2" />
+                                  <Trash
+                                    size={16}
+                                    className="mr-2 transition-transform duration-300 group-hover:-translate-y-1"
+                                  />
                                   Trash
                                 </Button>
                                 <Button
                                   onClick={() => viewSessions(course.id)}
-                                  className="mt-4"
+                                  className="mt-4 group"
                                 >
+                                  <ArrowRight className="mr-2 h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1" />
                                   View Sessions
                                 </Button>
                               </div>
@@ -149,17 +153,6 @@ export default function InstructorDashboard() {
                         </CardContent>
                       </Card>
                     )}
-                  </div>
-                  <div className="mb-8">
-                    <h2 className="text-xl font-bold mb-1">Analytics</h2>
-                    <p className="text-gray-500 mb-4">
-                      View statistics about your courses and students.
-                    </p>
-
-                    <div className="grid grid-cols-3 gap-4">
-                      <StatCard title="Total Students" value="3" />
-                      <StatCard title="Total Courses" value={courses.length} />
-                    </div>
                   </div>
                 </div>
               </>

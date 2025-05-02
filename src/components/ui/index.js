@@ -24,3 +24,12 @@ export {
   SelectValue,
 } from "./select";
 export { Badge } from "./badge";
+export {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";

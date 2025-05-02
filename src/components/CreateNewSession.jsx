@@ -21,7 +21,7 @@ const CreateNewSession = ({ courseId, onCancel }) => {
         title,
         description: content, // Store HTML content directly
         videoUrl,
-        courseId, // Passing the courseId to associate the session with the course
+        courseId, // Passing the courseId tso associate the session with the course
       };
       // Call the API to create a session
       const response = await sessionService.createSession(sessionData);
