@@ -308,7 +308,12 @@ const ShowCourseDetails = () => {
                             />
                           </div>
                         )}
-                        <p className="text-gray-500">{session.description}</p>
+                        <div
+                          className="mb-4"
+                          dangerouslySetInnerHTML={{
+                            __html: session.description,
+                          }}
+                        />
                         <Button
                           variant="destructive"
                           className="mt-4 group"

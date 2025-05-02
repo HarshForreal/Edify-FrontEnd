@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "./ui/index";
 import sessionService from "../services/sessionService"; // Import session service
 import { useNavigate } from "react-router-dom"; // To navigate back to the course details page
-import TipTapEditor from "./TipTapEditor"; // Import the Tiptap editor
+import TipTapEditor from "./Editor/TipTapEditor"; // Import the Tiptap editor
 const CreateNewSession = ({ courseId, onCancel }) => {
   const [content, setContent] = useState(""); // Content will be stored as HTML
   const [title, setTitle] = useState("");
@@ -91,9 +91,9 @@ const CreateNewSession = ({ courseId, onCancel }) => {
               className="block text-gray-700 mb-2"
               htmlFor="sessionContent"
             >
-              Session Content
+              Session Description
             </label>
-            <div className="border rounded">
+            <div className="rounded">
               <TipTapEditor
                 value={content} // Pass content to the Tiptap editor
                 onChange={(updatedContent) => setContent(updatedContent)} // Set HTML content

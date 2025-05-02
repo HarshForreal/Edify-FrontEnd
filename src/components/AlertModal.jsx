@@ -9,15 +9,15 @@ import {
 } from "../components/ui/index";
 import { Trash } from "lucide-react";
 
-const AlertModal = ({ isOpen, onClose, onConfirm, courseName }) => {
+const AlertModal = ({ isOpen, onClose, onConfirm }) => {
   const [enteredCourseName, setEnteredCourseName] = useState("");
 
   const handleConfirm = () => {
-    if (enteredCourseName === courseName) {
+    if (enteredCourseName === "Confirm") {
       onConfirm();
       onClose();
     } else {
-      alert("Course name does not match!");
+      alert("Please Enter Confirm");
     }
   };
 
@@ -37,7 +37,7 @@ const AlertModal = ({ isOpen, onClose, onConfirm, courseName }) => {
           type="text"
           value={enteredCourseName}
           onChange={(e) => setEnteredCourseName(e.target.value)}
-          placeholder="Enter course name"
+          placeholder="Are you sure ? Please Enter Confirm"
           className="w-full border p-2 mb-4 rounded-md"
         />
 

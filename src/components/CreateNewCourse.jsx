@@ -41,7 +41,6 @@ function CreateNewCourse({ onCancel }) {
   // Handle form data changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,

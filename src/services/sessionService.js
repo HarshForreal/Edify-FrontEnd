@@ -5,7 +5,6 @@ const sessionService = {
   getCourseSession: async (id) => {
     try {
       const response = await api.get(`/sessions/getSessionsByCourse/${id}`);
-      console.log(response);
       return response.data.sessions;
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -37,7 +36,6 @@ const sessionService = {
       console.error("Error while deleting session", error);
     }
   },
-  
 };
 
 export default sessionService;

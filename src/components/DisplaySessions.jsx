@@ -157,7 +157,10 @@ export default function DisplaySessions({ courseId, onBack }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-500 mb-4">{session.description}</p>
+                  <div
+                    className="text-gray-500 mb-4"
+                    dangerouslySetInnerHTML={{ __html: session.description }}
+                  />
                   <div className="relative w-full pt-[56.25%] bg-gray-300 rounded-lg overflow-hidden mb-4">
                     <ReactPlayer
                       url={session.videoUrl}
