@@ -5,7 +5,6 @@ import axios from "axios";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState(null);
 
@@ -18,8 +17,8 @@ export const AuthProvider = ({ children }) => {
             withCredentials: true,
           }
         );
-        setUser(response.data);
         setRole(response.data.role);
+        console.log("Role", role);
       } catch (error) {
         console.log("User not authenticated", error);
       } finally {
@@ -39,7 +38,6 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-      setUser(response.data.userData);
       setRole(response.data.userData.role);
       return response.data;
     } catch (error) {
@@ -51,12 +49,11 @@ export const AuthProvider = ({ children }) => {
     await axios.get("http://localhost:5000/api/auth/logout", {
       withCredentials: true,
     });
-    setUser(null);
     setRole(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, role, login, logout }}>
+    <AuthContext.Provider value={{ role, login, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );

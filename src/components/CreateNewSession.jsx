@@ -85,7 +85,6 @@ const CreateNewSession = ({ courseId, onCancel }) => {
             </p>
           </div>
 
-          {/* Session Content (Using Tiptap Editor) */}
           <div className="mb-6">
             <label
               className="block text-gray-700 mb-2"
@@ -95,16 +94,14 @@ const CreateNewSession = ({ courseId, onCancel }) => {
             </label>
             <div className="rounded">
               <TipTapEditor
-                value={content} // Pass content to the Tiptap editor
-                onChange={(updatedContent) => setContent(updatedContent)} // Set HTML content
+                value={content}
+                onChange={(updatedContent) => setContent(updatedContent)}
               />
             </div>
           </div>
 
-          {/* Error Message */}
           {error && <p className="text-red-500">{error}</p>}
 
-          {/* Action Buttons */}
           <div className="flex justify-between pt-4">
             <Button type="button" variant="outline" onClick={onCancel}>
               Cancel
