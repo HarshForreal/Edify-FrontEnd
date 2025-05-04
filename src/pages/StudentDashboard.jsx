@@ -18,7 +18,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import courseService from "../services/courseService";
 import enrollmentService from "../services/enrollmentService";
-import authService from "../services/authService";
+import { useAuth } from "@/context/AuthContext"; // Import useAuth to access logout
 import DisplaySessions from "@/components/DisplaySessions";
 import { toast } from "react-toastify";
 import ReactPlayer from "react-player";
@@ -28,10 +28,12 @@ export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
   const [myCourses, setMyCourses] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState("");
   const [showSessions, setShowSessions] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const navigate = useNavigate();
+
+  // Access logout function from AuthContext
+  const { logout } = useAuth();
 
   // Fetch Course List - discover tab
   const displayCourses = async () => {
@@ -61,27 +63,8 @@ export default function StudentDashboard() {
       console.log("Error fetching enrolled courses.", err);
     }
   };
+
   // Enroll into Course with toast notifications
-
-  const getSessions = (courseId) => {
-    setSelectedCourseId(courseId);
-    console.log("Course Id", courseId);
-    setShowSessions(true);
-  };
-
-  // Logout Function
-  const handleLogout = async () => {
-    console.log("Logging out the user");
-    try {
-      await authService.logout();
-      navigate("/login");
-    } catch (error) {
-      console.log("Error while logging out", error);
-    }
-  };
-
-  // Get Enrolled course and Check Enroll
-
   const enrollIntoCourse = async (id) => {
     try {
       const response = await enrollmentService.getEnrolled(id);
@@ -95,6 +78,24 @@ export default function StudentDashboard() {
       toast.error("Error enrolling in the course.", err);
     }
   };
+
+  // Get Sessions
+  const getSessions = (courseId) => {
+    setSelectedCourseId(courseId);
+    setShowSessions(true);
+  };
+
+  // Handle Logout using the logout function from AuthContext
+  const handleLogout = async () => {
+    try {
+      await logout(); // Call logout function from AuthContext
+      navigate("/login"); // Redirect to login after logout
+    } catch (error) {
+      console.log("Error while logging out", error);
+    }
+  };
+
+  // UseEffect to load courses based on active tab
   useEffect(() => {
     if (activeTab === "my-courses") {
       fetchEnrolledCourses();
@@ -105,7 +106,7 @@ export default function StudentDashboard() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Left Sidebar - Keep this fixed */}
+      {/* Left Sidebar */}
       <div className="w-64 border-r bg-white">
         <div className="p-4 border-b">
           <div className="flex items-center space-x-2">
@@ -141,7 +142,7 @@ export default function StudentDashboard() {
           <Button
             variant="ghost"
             className="justify-start hover:text-white hover:bg-red-500"
-            onClick={handleLogout}
+            onClick={handleLogout} // Using the handleLogout method
           >
             <LogOut className="mr-2 h-4 w-4" />
             Log out
@@ -149,7 +150,7 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      {/* Main content area - Make this scrollable */}
+      {/* Main content area */}
       <div className="flex-1 overflow-auto">
         <div className="p-8">
           <h1 className="text-3xl font-bold mb-2">Student Dashboard</h1>
