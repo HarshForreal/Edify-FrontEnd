@@ -34,3 +34,4 @@ export {
   DialogTrigger,
 } from "./dialog";
 export { Toggle } from "./toggle";
+export { Progress } from "./progress";

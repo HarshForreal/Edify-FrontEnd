@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import courseService from "@/services/courseService"; // Import courseService
-import { Badge } from "../components/ui/index";
+import { Badge } from "../ui/index";
 import ReactPlayer from "react-player";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/index";
-import InstructorSidebar from "@/components/InstructorSidebar";
-const ExploreCourses = () => {
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/index";
+const InstructorExplore = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [activePage, setActivePage] = useState("explore");
 
   // Fetch all courses
   const fetchAllCourses = async () => {
@@ -36,13 +29,6 @@ const ExploreCourses = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar can be the same as in the InstructorDashboard */}
-      {/* <InstructorSidebar activePage="explore" setActivePage={() => {}} /> */}
-      <InstructorSidebar
-        activePage={activePage}
-        setActivePage={setActivePage}
-      />
-
       {/* Main Content */}
       <div className="flex-1 overflow-auto p-6">
         <h2 className="text-xl font-bold mb-1">Explore Courses</h2>
@@ -90,4 +76,4 @@ const ExploreCourses = () => {
   );
 };
 
-export default ExploreCourses;
+export default InstructorExplore;

@@ -47,17 +47,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout function (now using POST to clear the session cookie)
   const logout = async () => {
     try {
       await axios.post(
         "http://localhost:5000/api/auth/logout",
         {},
         {
-          withCredentials: true, // Ensure cookies are included in the request
+          withCredentials: true, 
         }
       );
-      setRole(null); // Clear the role from the state after logout
+      setRole(null); 
     } catch (error) {
       console.error("Logout error", error);
     }

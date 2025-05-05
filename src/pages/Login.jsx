@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Label, Card, Input } from "../components/ui";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Use AuthContext
@@ -10,15 +10,16 @@ const Login = () => {
   const { login, role } = useAuth(); // Get login and role from AuthContext
   const navigate = useNavigate();
 
-  // Check if user is already logged in
-  if (role) {
-    // If user is logged in, navigate based on role
-    if (role === "student") {
-      navigate("/student-dashboard");
-    } else if (role === "instructor") {
-      navigate("/instructor-dashboard");
+  // Handle role-based redirection when role changes
+  useEffect(() => {
+    if (role) {
+      if (role === "student") {
+        navigate("/student-dashboard");
+      } else if (role === "instructor") {
+        navigate("/instructor-dashboard");
+      }
     }
-  }
+  }, [role, navigate]); // This effect will run when the role changes
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,7 +44,7 @@ const Login = () => {
       <Card className="p-6 max-w-md w-full">
         <h2 className="text-xl font-semibold text-center">Login</h2>
         <p className="text-sm mb-4 text-center text-slate-500">
-          Explore wide range of courses
+          Explore a wide range of courses
         </p>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

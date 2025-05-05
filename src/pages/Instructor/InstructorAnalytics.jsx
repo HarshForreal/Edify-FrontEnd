@@ -1,9 +1,8 @@
 import React from "react";
-import InstructorSidebar from "@/components/InstructorSidebar";
 const InstructorAnalytics = () => {
   return (
     <div>
-      <InstructorSidebar />
+      <h1>Instructor Analytics goes here</h1>
     </div>
   );
 };
