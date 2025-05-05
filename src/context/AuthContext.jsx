@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState(null);
 
+  // Fetch user on load
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
             withCredentials: true,
           }
         );
-        setRole(response.data.role);
+        setRole(response.data.role); // Set role after successful fetch
         console.log("Role", role);
       } catch (error) {
         console.log("User not authenticated", error);
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
+  // Login function
   const login = async (email, password) => {
     try {
       const response = await axios.post(
@@ -38,7 +40,7 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-      setRole(response.data.userData.role);
+      setRole(response.data.userData.role); // Set the role after login
       return response.data;
     } catch (error) {
       throw new error();
@@ -46,15 +48,23 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await axios.get("http://localhost:5000/api/auth/logout", {
-      withCredentials: true,
-    });
-    setRole(null);
+    try {
+      await axios.post(
+        "http://localhost:5000/api/auth/logout",
+        {},
+        {
+          withCredentials: true, 
+        }
+      );
+      setRole(null); 
+    } catch (error) {
+      console.error("Logout error", error);
+    }
   };
 
   return (
     <AuthContext.Provider value={{ role, login, logout }}>
-      {!loading && children}
+      {!loading && children}{" "}
     </AuthContext.Provider>
   );
 };
@@ -62,5 +72,5 @@ export const AuthProvider = ({ children }) => {
 export default AuthContext;
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  return useContext(AuthContext); // Hook to access auth context values
 };

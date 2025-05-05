@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "./ui";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui";
+import { Button } from "../ui";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui";
 import ReactPlayer from "react-player";
-import enrollmentService from "../services/enrollmentService";
-import sessionService from "../services/sessionService";
+import enrollmentService from "../../services/enrollmentService";
+import sessionService from "../../services/sessionService";
 
-export default function DisplaySessions({ courseId, onBack }) {
+export default function DisplaySessionsProgress({ courseId, onBack }) {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -44,18 +44,13 @@ export default function DisplaySessions({ courseId, onBack }) {
       });
 
       // Debugging the progressSessions to see its structure
-      console.log("Progress Sessions:", progressSessions);
 
       // Combine session data with progress data
       const sessionsWithProgress = sessionData.map((session) => {
-        console.log("Checking session:", session);
-
         // Find the progress for the session from progressSessions
         const sessionProgress = progressSessions.find(
           (p) => p.id === session.id
         );
-        console.log("Session Progress:", sessionProgress);
-
         return {
           ...session,
           isCompleted: sessionProgress ? sessionProgress.isCompleted : false,
@@ -115,10 +110,6 @@ export default function DisplaySessions({ courseId, onBack }) {
 
   return (
     <div className="p-8">
-      <Button onClick={onBack} variant="outline" className="mb-4">
-        Back to Courses
-      </Button>
-
       <div className="mb-6">
         <h2 className="text-2xl font-bold mt-4">Course Progress</h2>
         <div className="mt-2 bg-gray-200 rounded-full h-4 w-full">
@@ -205,6 +196,9 @@ export default function DisplaySessions({ courseId, onBack }) {
           )}
         </div>
       )}
+      <Button onClick={onBack} variant="outline" className="mt-10">
+        Back to Courses
+      </Button>
     </div>
   );
 }

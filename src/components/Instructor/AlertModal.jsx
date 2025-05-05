@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   Button,
-} from "../components/ui/index";
+} from "../ui/index";
 import { Trash } from "lucide-react";
 
 const AlertModal = ({ isOpen, onClose, onConfirm }) => {

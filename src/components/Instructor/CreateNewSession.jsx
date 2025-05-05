@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Button } from "./ui/index";
-import sessionService from "../services/sessionService"; // Import session service
+import { Button } from "../ui/index";
+import sessionService from "../../services/sessionService"; // Import session service
 import { useNavigate } from "react-router-dom"; // To navigate back to the course details page
-import TipTapEditor from "./Editor/TipTapEditor"; // Import the Tiptap editor
+import TipTapEditor from "../Editor/TipTapEditor"; // Import the Tiptap editor
 const CreateNewSession = ({ courseId, onCancel }) => {
   const [content, setContent] = useState(""); // Content will be stored as HTML
   const [title, setTitle] = useState("");
@@ -79,6 +79,7 @@ const CreateNewSession = ({ courseId, onCancel }) => {
               className="w-full p-2 border rounded"
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
+              required
             />
             <p className="text-gray-600 text-sm mt-1">
               Provide a YouTube video URL for this session (optional).
@@ -96,6 +97,7 @@ const CreateNewSession = ({ courseId, onCancel }) => {
               <TipTapEditor
                 value={content}
                 onChange={(updatedContent) => setContent(updatedContent)}
+                required
               />
             </div>
           </div>
