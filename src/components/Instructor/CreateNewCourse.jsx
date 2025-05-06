@@ -45,16 +45,16 @@ function CreateNewCourse({ onCancel }) {
   // Handle form submission
   const handleCreateCourse = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true
+    setLoading(true);
 
     try {
-      const response = await courseService.createCourse(formData); // Create course through service
+      const response = await courseService.createCourse(formData);
       console.log("Course created successfully:", response.message);
-      console.log("Course Data Being Sent:", formData); // Log formData to ensure category is there
-      const newCourseId = response.course.id; // Assuming the response contains the `course.id`
+      console.log("Course Data Being Sent:", formData);
+      const newCourseId = response.course.id;
       navigate(`/instructor-dashboard/courses/${newCourseId}`);
 
-      setShowAddSessionForm(true); // Show the "Add Session" form after course creation
+      setShowAddSessionForm(true);
     } catch (err) {
       setError("Error creating course. Please try again.");
       console.error(err);
