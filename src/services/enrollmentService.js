@@ -1,4 +1,3 @@
-// src/services/enrollmentService.js
 import api from "./axiosConfig";
 
 const enrollmentService = {
@@ -19,6 +18,7 @@ const enrollmentService = {
       const response = await api.post("/enroll/enrollInCourse", {
         courseId: id,
       });
+      console.log("Response from backend", response);
       return response.data;
     } catch (error) {
       throw new Error("Error occurred while enrolling in course", error);

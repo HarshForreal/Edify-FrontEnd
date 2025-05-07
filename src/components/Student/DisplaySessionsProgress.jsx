@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import RatingModal from "./RatingModal"; // Import the RatingModal
 import { Button } from "../ui";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui";
+import { Card, CardHeader, CardTitle, CardContent } from "../ui";
 import ReactPlayer from "react-player";
 import enrollmentService from "../../services/enrollmentService";
 import sessionService from "../../services/sessionService";
+import reviewService from "../../services/reviewService.js";
 
 export default function DisplaySessionsProgress({ courseId, onBack }) {
   const [sessions, setSessions] = useState([]);
@@ -14,21 +16,19 @@ export default function DisplaySessionsProgress({ courseId, onBack }) {
     completedSessions: 0,
     progressPercentage: 0,
   });
+  // Modal toggle visibility state
+  const [showModal, setShowModal] = useState(false);
 
-  // Fetch sessions and user progress
   const fetchSessionsAndProgress = async () => {
     try {
       setLoading(true);
 
-      // Fetch all sessions for the course
       const sessionData = await sessionService.getCourseSession(courseId);
       console.log("Session Data", sessionData);
 
-      // Fetch the user's progress for the course
       const progressData = await enrollmentService.getCourseProgress(courseId);
       console.log("Progress Data Log", progressData);
 
-      // Extract progress metrics
       const {
         totalSessions,
         completedSessions,
@@ -36,18 +36,13 @@ export default function DisplaySessionsProgress({ courseId, onBack }) {
         sessions: progressSessions = [],
       } = progressData || {};
 
-      // Update course progress state
       setCourseProgress({
         totalSessions: totalSessions || 0,
         completedSessions: completedSessions || 0,
         progressPercentage: progressPercentage || 0,
       });
 
-      // Debugging the progressSessions to see its structure
-
-      // Combine session data with progress data
       const sessionsWithProgress = sessionData.map((session) => {
-        // Find the progress for the session from progressSessions
         const sessionProgress = progressSessions.find(
           (p) => p.id === session.id
         );
@@ -59,6 +54,10 @@ export default function DisplaySessionsProgress({ courseId, onBack }) {
 
       setSessions(sessionsWithProgress);
       setLoading(false);
+
+      if (completedSessions === totalSessions && totalSessions > 0) {
+        setShowModal(true);
+      }
     } catch (err) {
       setError("Error fetching sessions and progress.");
       setLoading(false);
@@ -75,30 +74,27 @@ export default function DisplaySessionsProgress({ courseId, onBack }) {
       setSessions((prevSessions) =>
         prevSessions.map((session) =>
           session.id === sessionId
-            ? { ...session, isProcessing: true } // Show processing state
+            ? { ...session, isProcessing: true }
             : session
         )
       );
 
-      // Call the API to mark the session as completed
       await enrollmentService.markSessionAsCompleted(sessionId, courseId);
 
-      // Immediately update the session status in frontend state
       setSessions((prevSessions) =>
         prevSessions.map((session) =>
           session.id === sessionId
-            ? { ...session, isCompleted: true, isProcessing: false } // Update status to completed
+            ? { ...session, isCompleted: true, isProcessing: false }
             : session
         )
       );
 
-      // Re-fetch updated session data and progress
       await fetchSessionsAndProgress();
     } catch (err) {
       setSessions((prevSessions) =>
         prevSessions.map((session) =>
           session.id === sessionId
-            ? { ...session, isProcessing: false } // Remove processing state if error occurs
+            ? { ...session, isProcessing: false }
             : session
         )
       );
@@ -108,8 +104,18 @@ export default function DisplaySessionsProgress({ courseId, onBack }) {
     }
   };
 
+  const handleSubmitReview = async (rating, comment) => {
+    try {
+      const response = await reviewService.addReview(courseId, rating, comment);
+      console.log("Review submitted", response);
+      setShowModal(false);
+    } catch (err) {
+      console.error("Error submitting review:", err);
+    }
+  };
+
   return (
-    <div className="p-8">
+    <div className="p-16">
       <div className="mb-6">
         <h2 className="text-2xl font-bold mt-4">Course Progress</h2>
         <div className="mt-2 bg-gray-200 rounded-full h-4 w-full">
@@ -130,8 +136,6 @@ export default function DisplaySessionsProgress({ courseId, onBack }) {
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
-      ) : error ? (
-        <div className="text-red-500 p-4 bg-red-50 rounded-md">{error}</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
           {sessions.length > 0 ? (
@@ -199,6 +203,14 @@ export default function DisplaySessionsProgress({ courseId, onBack }) {
       <Button onClick={onBack} variant="outline" className="mt-10">
         Back to Courses
       </Button>
+
+      {showModal && (
+        <RatingModal
+          courseId={courseId}
+          onClose={() => setShowModal(false)}
+          onSubmit={handleSubmitReview}
+        />
+      )}
     </div>
   );
 }

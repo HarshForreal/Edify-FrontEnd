@@ -1,6 +1,5 @@
 import api from "./axiosConfig";
 
-// Helper function to extract YouTube video ID
 const getYouTubeVideoId = (url) => {
   const regex =
     /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|(?:.*?[?&]v=))([^"&?\\/\s]*))/;
@@ -8,13 +7,12 @@ const getYouTubeVideoId = (url) => {
   return match ? match[1] : null;
 };
 
-// Helper function to get the thumbnail URL
 const getThumbnailUrl = (url) => {
   const videoId = getYouTubeVideoId(url);
   if (videoId) {
-    return `https://img.youtube.com/vi/${videoId}/0.jpg`; // YouTube thumbnail URL
+    return `https://img.youtube.com/vi/${videoId}/0.jpg`;
   }
-  return "/path/to/default-thumbnail.jpg"; // we need to add the default thumbnail.
+  return "/path/to/default-thumbnail.jpg";
 };
 
 const courseService = {
@@ -23,7 +21,6 @@ const courseService = {
       const response = await api.get("/courses/");
       const courses = response.data.courses;
       console.log("Fetched Courses", courses);
-      // Add thumbnail URL to each course
       courses.forEach((course) => {
         if (course.videoUrl) {
           course.thumbnailUrl = getThumbnailUrl(course.videoUrl);

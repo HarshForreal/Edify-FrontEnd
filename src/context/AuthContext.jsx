@@ -1,8 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 
-// Create a Context for Auth
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -18,8 +17,7 @@ export const AuthProvider = ({ children }) => {
             withCredentials: true,
           }
         );
-        setRole(response.data.role); // Set role after successful fetch
-        console.log("Role", role);
+        setRole(response.data.role);
       } catch (error) {
         console.log("User not authenticated", error);
       } finally {
@@ -30,7 +28,6 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  // Login function
   const login = async (email, password) => {
     try {
       const response = await axios.post(
@@ -40,10 +37,42 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-      setRole(response.data.userData.role); // Set the role after login
+      setRole(response.data.userData.role);
       return response.data;
     } catch (error) {
-      throw new error();
+      console.log("Error", error);
+    }
+  };
+
+  const googleLogin = async (token, inputRole) => {
+    let userRole = "";
+    if (typeof inputRole === "object" && inputRole !== null) {
+      userRole = inputRole.role || "";
+    } else {
+      userRole = inputRole || "";
+    }
+
+    console.log("User Role =", userRole);
+    console.log("GoogleLogin function Token and Role", token, userRole);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/google-login",
+        { token, role: userRole },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("Response from API:", response.data);
+      const newRole = response.data.userData.role;
+      console.log("Setting role to:", newRole);
+
+      setRole(newRole);
+      return response.data;
+    } catch (error) {
+      console.log("Error", error);
+      throw error;
     }
   };
 
@@ -53,24 +82,22 @@ export const AuthProvider = ({ children }) => {
         "http://localhost:5000/api/auth/logout",
         {},
         {
-          withCredentials: true, 
+          withCredentials: true,
         }
       );
-      setRole(null); 
+      setRole(null);
     } catch (error) {
       console.error("Logout error", error);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ role, login, logout }}>
+    <AuthContext.Provider value={{ role, loading, login, googleLogin, logout }}>
       {!loading && children}{" "}
     </AuthContext.Provider>
   );
 };
 
-export default AuthContext;
-
 export const useAuth = () => {
-  return useContext(AuthContext); // Hook to access auth context values
+  return useContext(AuthContext);
 };

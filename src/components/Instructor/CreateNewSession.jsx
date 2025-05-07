@@ -1,37 +1,36 @@
 import React, { useState } from "react";
 import { Button } from "../ui/index";
-import sessionService from "../../services/sessionService"; // Import session service
-import { useNavigate } from "react-router-dom"; // To navigate back to the course details page
-import TipTapEditor from "../Editor/TipTapEditor"; // Import the Tiptap editor
+import sessionService from "../../services/sessionService";
+import TipTapEditor from "../Editor/TipTapEditor";
+
 const CreateNewSession = ({ courseId, onCancel }) => {
-  const [content, setContent] = useState(""); // Content will be stored as HTML
+  const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true); // Start loading state
+    setLoading(true);
 
     try {
       const sessionData = {
         title,
-        description: content, // Store HTML content directly
+        description: content,
         videoUrl,
-        courseId, // Passing the courseId tso associate the session with the course
+        courseId,
       };
-      // Call the API to create a session
+      // calling the api to create service
       const response = await sessionService.createSession(sessionData);
       console.log("Session created successfully:", response);
-      navigate(`/instructor-dashboard`);
+      window.location.reload();
     } catch (err) {
       setError("Error creating session. Please try again.");
       console.error(err);
     } finally {
-      setLoading(false); // End loading state
+      setLoading(false);
     }
   };
 
@@ -49,7 +48,6 @@ const CreateNewSession = ({ courseId, onCancel }) => {
         </p>
 
         <form onSubmit={handleSubmit}>
-          {/* Session Title */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-2" htmlFor="sessionTitle">
               Session Title
@@ -66,7 +64,6 @@ const CreateNewSession = ({ courseId, onCancel }) => {
             />
           </div>
 
-          {/* YouTube Video URL */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-2" htmlFor="youtubeUrl">
               YouTube Video URL

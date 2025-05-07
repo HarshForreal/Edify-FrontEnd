@@ -4,12 +4,10 @@ import sessionService from "../../services/sessionService";
 import { Trash, Plus } from "lucide-react";
 import { Button, Card, CardHeader, CardContent, CardTitle } from "../ui/index";
 import ReactPlayer from "react-player";
-import InstructorSidebar from "../Instructor/InstructorSidebar";
 import { useNavigate } from "react-router-dom";
 import CreateNewSession from "./CreateNewSession";
 import { toast } from "react-toastify";
 import AlertModal from "./AlertModal";
-
 const DisplayCourseSessions = () => {
   const { courseId } = useParams();
   const [sessions, setSessions] = useState([]);
@@ -48,13 +46,13 @@ const DisplayCourseSessions = () => {
   };
 
   const handleShowAlertModal = (sessionId) => {
-    setSessionToDelete(sessionId); // Set the session to be deleted
-    setIsModalOpen(true); // Show the alert modal
+    setSessionToDelete(sessionId);
+    setIsModalOpen(true);
   };
 
   const handleCloseAlertModal = () => {
-    setIsModalOpen(false); // Close the modal
-    setSessionToDelete(null); // Reset session to delete
+    setIsModalOpen(false);
+    setSessionToDelete(null);
   };
 
   const fetchSessions = async () => {
@@ -73,8 +71,8 @@ const DisplayCourseSessions = () => {
   }, [courseId]);
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <div className="flex-1 overflow-auto">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-50">
+      <div className="flex-1 overflow-auto p-6">
         {showCreateSession ? (
           <CreateNewSession
             onCancel={handleCancelCreateSession}
@@ -82,7 +80,7 @@ const DisplayCourseSessions = () => {
           />
         ) : (
           <>
-            <div className="p-6 flex justify-between items-center">
+            <div className="flex justify-between items-center mb-6">
               <h1 className="text-2xl font-bold">Course Sessions</h1>
               <Button
                 className="flex items-center gap-2"
@@ -98,7 +96,7 @@ const DisplayCourseSessions = () => {
               {error && <div className="text-red-500">{error}</div>}
 
               {!loading && !error && sessions.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {sessions.map((session) => (
                     <Card
                       key={session.id}
@@ -132,7 +130,7 @@ const DisplayCourseSessions = () => {
                         <Button
                           variant="destructive"
                           className="mt-4 group"
-                          onClick={() => handleShowAlertModal(session.id)} // Open modal when clicking delete
+                          onClick={() => handleShowAlertModal(session.id)}
                         >
                           <Trash size={16} className="mr-2" />
                           Trash
@@ -158,11 +156,10 @@ const DisplayCourseSessions = () => {
         )}
       </div>
 
-      {/* AlertModal for confirming session deletion */}
       <AlertModal
         isOpen={isModalOpen}
         onClose={handleCloseAlertModal}
-        onConfirm={() => handleDeleteSession(sessionToDelete)} // Pass the correct function
+        onConfirm={() => handleDeleteSession(sessionToDelete)}
       />
     </div>
   );

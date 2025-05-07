@@ -14,33 +14,11 @@ import authService from "@/services/authService";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("student"); // State to track the selected role
+  const [role, setRole] = useState("student");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Call your signup API or Auth Context to handle signup
-    // try {
-    //   const response = await axios.post(
-    //     "http://localhost:5000/api/auth/signup",
-    //     {
-    //       email,
-    //       password,
-    //       role,
-    //     }
-    //   );
-
-    //   console.log("New-User: ", response.data.newUser);
-    //   console.log("Backend response: ", response.data.message);
-    //   if (
-    //     response.data.newUser &&
-    //     response.data.message === "Signup successful"
-    //   ) {
-    //     navigate("/login");
-    //   }
-    // } catch (error) {
-    //   setError("Some Error Occured", error);
-    // }
     try {
       const data = await authService.signup(email, password, role);
 
@@ -88,8 +66,8 @@ const Signup = () => {
             <Label>Role</Label>
             <RadioGroup
               value={role}
-              onValueChange={setRole} // Set role when selected
-              className="flex space-x-4 mt-2" // Display radio buttons side by side
+              onValueChange={setRole}
+              className="flex space-x-4 mt-2"
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="student" id="student" />
