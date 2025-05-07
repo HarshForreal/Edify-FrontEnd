@@ -22,18 +22,16 @@ function CreateNewCourse({ onCancel }) {
     "Data Science",
     "Languages",
   ];
-  // const [showNewCourse, setShowNewCourse] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     category: "",
     videoUrl: "",
-  }); // State for form data
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showAddSessionForm, setShowAddSessionForm] = useState(false); // State to toggle session form visibility
+  const [showAddSessionForm, setShowAddSessionForm] = useState(false);
   const navigate = useNavigate();
-  // Handle form data changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -42,7 +40,6 @@ function CreateNewCourse({ onCancel }) {
     }));
   };
 
-  // Handle form submission
   const handleCreateCourse = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -59,7 +56,7 @@ function CreateNewCourse({ onCancel }) {
       setError("Error creating course. Please try again.");
       console.error(err);
     } finally {
-      setLoading(false); // Set loading to false once API call completes
+      setLoading(false);
     }
   };
   const handleCategoryChange = (value) => {
@@ -180,18 +177,12 @@ function CreateNewCourse({ onCancel }) {
                     />
                   </div>
                 </div>
-
-                {/* Action Buttons */}
                 {error && <p className="text-red-500">{error}</p>}
                 <div className="flex justify-between pt-4">
                   <Button type="button" variant="outline" onClick={onCancel}>
                     Cancel
                   </Button>
-                  <Button
-                    type="submit"
-                    onClick={submitForm}
-                    disabled={loading} // Disable button while loading
-                  >
+                  <Button type="submit" onClick={submitForm} disabled={loading}>
                     {loading ? "Creating..." : "Create Course"}
                   </Button>
                 </div>

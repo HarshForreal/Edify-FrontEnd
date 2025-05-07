@@ -12,8 +12,7 @@ import Navbar from "../components/Navbar";
 function Home() {
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navbar /> {/* Include the Navbar component here */}
-      {/* Hero Section */}
+      <Navbar />
       <section className="pt-32 pb-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-serif italic mb-6 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">

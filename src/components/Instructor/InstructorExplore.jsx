@@ -9,12 +9,11 @@ const InstructorExplore = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Fetch all courses
   const fetchAllCourses = async () => {
     try {
       const data = await courseService.getAllCourses();
       console.log("Data from explore courses", data);
-      setCourses(data.courses); // Set fetched courses to state
+      setCourses(data.courses);
       setLoading(false);
     } catch (error) {
       console.log("Error fetching courses", error);

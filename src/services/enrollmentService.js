@@ -1,4 +1,3 @@
-// src/services/enrollmentService.js
 import api from "./axiosConfig";
 
 const enrollmentService = {

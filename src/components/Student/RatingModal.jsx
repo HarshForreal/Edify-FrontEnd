@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../ui";
 
-const RatingModal = ({ courseId, onClose, onSubmit }) => {
+const RatingModal = ({ onClose, onSubmit }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
@@ -10,10 +10,8 @@ const RatingModal = ({ courseId, onClose, onSubmit }) => {
       alert("Please select a rating.");
       return;
     }
-
-    // Call the onSubmit function passed from parent (which sends review data)
     onSubmit(rating, comment);
-    onClose(); // Close the modal after submission
+    onClose();
   };
 
   return (

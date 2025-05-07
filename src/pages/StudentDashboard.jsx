@@ -42,17 +42,16 @@ const StudentDashboard = () => {
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
-      <div className="flex-1 overflow-auto p-8">
+      <div className="flex-1 overflow-auto p-16">
         <h1 className="text-3xl font-bold mb-2">Student Dashboard</h1>
         <p className="text-gray-500 mb-6">
           Welcome back! Continue learning or discover new courses.
         </p>
 
-        {/* Render Content Based on Active Section */}
         {showSessions ? (
           <DisplaySessionsProgress
             courseId={selectedCourseId}
-            onBack={() => setShowSessions(false)} // Go back to courses list
+            onBack={() => setShowSessions(false)}
           />
         ) : (
           <div>
@@ -82,7 +81,7 @@ const StudentDashboard = () => {
                     </div>
                     <CardDescription>{course.description}</CardDescription>
                     <Button
-                      onClick={() => getSessions(course.id)} // On click, fetch the sessions
+                      onClick={() => getSessions(course.id)}
                       className="mt-4"
                     >
                       Continue
